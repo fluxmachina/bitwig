@@ -15,20 +15,18 @@ var ufx =
 	PLAY : 94,
 	REC : 95
 };
-//isPlay = false // Decided to commented out.  What does it do?
 
 // Tell bitwig what is going to be controlled and watch the transport controls on screen.
 function init()
 {
 	host.getMidiInPort(0).setMidiCallback(onMidi);
 	transport = host.createTransportSection();
-	transport.addIsPlayingObserver(function(on) // Is Bitwig transport playing?
+	transport.addIsPlayingObserver(function(on) // Is Bitwig's transport playing?
 	{
-		//isPlay = on; // Decided to commented out.  What does it do?
 		sendNoteOn(0, ufx.PLAY, on ? 127 : 0); // Don't understand this yet.
 		sendNoteOn(0, ufx.STOP, on ? 0 : 127);
 	});
-	transport.addIsRecordingObserver(function(on) // Is Bitwig transport record?
+	transport.addIsRecordingObserver(function(on) // Is Bitwig's transport recording?
 	//transport.addLauncherOverdubObserver(function(on) // Handy for overdubbing in clips.
 	{
 		sendNoteOn(0, ufx.REC, on ? 127 : 0);
@@ -49,7 +47,7 @@ function onMidi(status, data1, data2)
 			sendMidi(144, ufx.REW, data2); // Send(midi note, note value, note velocity)
 			break;
 		case ufx.FF:
-			if (data2 > 0) // same as above.
+			if (data2 > 0)
 			{
 				transport.fastForward();
 			}
